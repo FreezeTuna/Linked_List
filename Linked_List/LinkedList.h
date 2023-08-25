@@ -11,14 +11,14 @@ public:
 	struct Node;
 
 public:
-	//Set Head Node
-	LinkedList(Node* head)
-	{
-		this->head = head;
-	}
+	////Set Head Node
+	//LinkedList(Node* head)
+	//{
+	//	this->head = head;
+	//}
 
 	//Get Head Node
-	Node* Head() { return head; }
+	//Node* Head() { return head; }
 
 public:
 	//Add New Node
@@ -62,12 +62,39 @@ public:
 	//Push Node to End
 	void Push(Node* node)
 	{
+		if (head == NULL)
+		{
+			node->Next = NULL;
+			head = node;
+		}
+
 		Node* tail = head;
 		while (tail->Next != NULL)
 			tail = tail->Next;
 		tail->Next = node;
 		node->Next = NULL;
 	}
+
+	//	Pop to End
+	void Pop_Back()
+	{
+		if (head == NULL)
+		{
+			return;
+		}
+
+		Node* tail = head;
+		Node* prev = NULL;
+		while (tail->Next != NULL)
+		{
+			prev = tail;
+			tail = tail->Next;
+		}
+
+		prev->Next = NULL;
+		delete tail;
+	}
+
 	//Insert Node to Behind Current Node
 	void Insert(Node* current, Node* node)
 	{
@@ -83,6 +110,83 @@ public:
 			current = current->Next;
 		node->Next = current->Next;
 		current->Next = node;
+	}
+	//Delete Node from Node
+	void Delete(Node* node)
+	{
+		if (head == NULL)
+		{
+			return;
+		}
+
+		if (head->Data == node->Data)
+		{
+			delete head;
+			head = NULL;
+		}
+
+		Node* findNode = head;
+		Node* prev = NULL;
+		Node* next = NULL;
+		while (findNode->Next != NULL)
+		{
+			if (findNode->Next->Data == node->Data)
+			{
+				prev = findNode;
+				findNode = findNode->Next;
+				next = findNode->Next;
+				break;
+			}
+			findNode = findNode->Next;
+		}
+
+		if (prev == NULL)
+		{
+			return;
+		}
+
+		prev->Next = next;
+		delete findNode;
+	}
+	//Delete Node from Location
+	void Delete(int location)
+	{
+		if (GetNodeCount() < location)
+		{
+			return;
+		}
+
+		if (head == NULL)
+		{
+			return;
+		}
+
+		if (location == 0)
+		{
+			Node* next = head->Next;
+			delete head;
+			head = next;
+			return;
+		}
+
+		Node* current = head;
+		Node* prev = NULL;
+		Node* next = NULL;
+		int count = 0;
+		while (current->Next != NULL && count++ != location)
+		{
+			if (count == location)
+			{
+				prev = current;
+				next = current->Next->Next;
+				current = current->Next;
+				break;
+			}
+			current = current->Next;
+		}
+
+		prev->Next = next;
+		delete current;
 	}
 
 	//Get Node from Location Index
@@ -109,17 +213,31 @@ public:
 	}
 
 	//Print Node <Àç±Í ÇÔ¼ö>
-	void Print(Node* node)
+	void Print(Node* node = NULL)
 	{
 		if (node == NULL)
 		{
-			cout << endl;
+			if (head != NULL)
+			{
+				cout << head->Data;
+				if (head->Next != NULL)
+				{
+					cout << " -> ";
+					Print(head->Next);
+				}
+			}
 			return;
 		}
 		cout << node->Data;
 		if (node->Next != NULL)
+		{
 			cout << " -> ";
-		Print(node->Next);
+			Print(node->Next);
+		}
+		else
+		{
+			cout << endl;
+		}
 	}
 
 public:
@@ -134,6 +252,5 @@ public:
 
 private:
 	//Add Linked List Head Node
-	Node* head;
-
+	Node* head = NULL;
 };
