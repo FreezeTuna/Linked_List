@@ -65,6 +65,33 @@ int main()
 
 	doubleList->Print();
 
-	
+	doubleList->Move_Left(2);
+
+	index = new int;
+	*index = 20;
+	doubleList->Push_Cur(DoubleList::Create(&index));
+
+	doubleList->Print();
+
+	doubleList->Move_Left(3);
+
+	index = new int;
+	*index = 20;
+	doubleList->Push_Cur(DoubleList::Create(&index));
+
+	doubleList->Print();
+
+	doubleList->Move_Right(1);
+
+	index = new int;
+	*index = 20;
+	doubleList->Push_Cur(DoubleList::Create(&index));
+
+	doubleList->Print();
+
+	node = doubleList->GetNodeFromIndex(3);
+
+	cout << *node->Data << endl;
+
 	return 0;
 }

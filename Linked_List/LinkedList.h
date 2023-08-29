@@ -276,8 +276,39 @@ public:
 	};
 
 public:
-	bool SetCurNode()
+	bool Move_Left(int index)
 	{
+		int count = 0;
+		Node* node = m_CurNode;
+		while (node != NULL && count++ != index)
+		{
+			node = node->Prev;
+		}
+
+		if (node != NULL)
+		{
+			m_CurNode = node;
+			return true;
+		}
+
+		return false;
+	}
+
+	bool Move_Right(int index)
+	{
+		int count = 0;
+		Node* node = m_CurNode;
+		while (node != NULL && count++ != index)
+		{
+			node = node->Next;
+		}
+
+		if (node != NULL)
+		{
+			m_CurNode = node;
+			return true;
+		}
+
 		return false;
 	}
 
@@ -309,8 +340,8 @@ public:
 		if (m_CurNode->Next != NULL)
 		{
 			Node* nextNode = m_CurNode->Next;
-			nextNode = node;
 			nextNode->Prev = node;
+			m_CurNode->Next = node;
 			node->Prev = m_CurNode;
 			node->Next = nextNode;
 			m_CurNode = node;
@@ -415,6 +446,43 @@ public:
 		}
 
 		return Count;
+	}
+
+	bool VaildIndex(int index)
+	{
+		if (m_HeadNode == NULL)
+		{
+			return false;
+		}
+
+		if (this->GetSize() > index)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+	Node* GetNodeFromIndex(int index)
+	{
+		if (m_HeadNode == NULL)
+		{
+			return NULL;
+		}
+
+		Node* node = m_HeadNode;
+		int count = 0;
+		while (node->Next != NULL && count++ != index)
+		{
+			node = node->Next;
+		}
+
+		if (node != NULL)
+		{
+			return node;
+		}
+
+		return NULL;
 	}
 
 	//Print Node <Àç±Í ÇÔ¼ö>
